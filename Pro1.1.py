@@ -26,43 +26,56 @@ def getall(word):
         st.error("软件升级中...")
 
     tree = etree.HTML(html)
+    cardNAMES = tree.xpath("//main/ul/li//img/@alt")
     cardRES = len(tree.xpath("//main/ul/li"))
+    snc=-1 #same name card
     if cardRES>1:
-        cardNAMES = tree.xpath("//main/ul/li//img/@alt")
+        for i in range(cardRES):
+            if(word==cardNAMES[i]):
+                snc = i
+        if snc == -1:
         #print("请精确卡片名称后再次使用！")
-        st.error("请精确卡片名称后再次使用！卡片名称参考:")
+            st.error("请精确卡片名称后再次使用！卡片名称参考:")
         #st.info("")
-        for i in cardNAMES:
-            st.info(i)
+            for i in cardNAMES:
+                st.info(i)
+        else:
+            Cardtype = tree.xpath("//main//li//div[@class='type']/text()")[snc]
+            Cardkoka = tree.xpath("//main//li//div[@class='description']/text()")[snc]
+            CardDL = tree.xpath("//main//li//div//img/@src")[snc]
+            show(CardDL, word, Cardtype, Cardkoka)
     else:
         Cardtype = tree.xpath("//main//li//div[@class='type']/text()")[0]
         Cardkoka = tree.xpath("//main//li//div[@class='description']/text()")[0]
         #print(Cardtype)
         #print(Cardkoka)
         CardDL = tree.xpath("//main//li//div//img/@src")[0]
-        urllib.request.urlretrieve(url=CardDL,filename="./yghimg/"+str(word)+".jpg")
-        #print("已成功下载卡片")
-        img = Image.open("./yghimg/"+str(word)+".jpg")
-        img = img.resize((295, 430), Image.ANTIALIAS)
-        # st.image(img)
-        col1, col2 = st.columns(2)
-        with col1:
-            st.header("Card Image")
-            st.image(img)
-        with col2:
-            st.header("Card Effect")
-            st.write(Cardtype)
-            st.write(Cardkoka)
-            with open("./yghimg/"+str(word)+".jpg", "rb") as file:
-                btn = st.download_button(
-                    label="Download image",
-                    data=file,
-                    file_name=str(word)+".jpg",
-                    mime="image/jpg",
-                )
-                if btn==True:
-                    success()
+        show(CardDL, word, Cardtype, Cardkoka)
 
+
+def show(CardDL,word,Cardtype,Cardkoka):
+    urllib.request.urlretrieve(url=CardDL, filename="./yghimg/" + str(word) + ".jpg")
+    # print("已成功下载卡片")
+    img = Image.open("./yghimg/" + str(word) + ".jpg")
+    img = img.resize((295, 430), Image.ANTIALIAS)
+    # st.image(img)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.header("Card Image")
+        st.image(img)
+    with col2:
+        st.header("Card Effect")
+        st.write(Cardtype)
+        st.write(Cardkoka)
+        with open("./yghimg/" + str(word) + ".jpg", "rb") as file:
+            btn = st.download_button(
+                label="Download image",
+                data=file,
+                file_name=str(word) + ".jpg",
+                mime="image/jpg",
+            )
+            if btn == True:
+                success()
 
 def success():
     st.success("The picture is downloaded successfully")
@@ -82,7 +95,7 @@ def APP():
 if __name__ == '__main__':
     APP()
     #word = input('请输入搜索内容:')
-    if len(message) >2:
+    if len(message) >1:
 
         getall(message)
     else:
