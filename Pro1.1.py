@@ -75,5 +75,5 @@ if __name__ == '__main__':
 
         getall(message)
     else:
-        st.error("请精确卡片名称后再次使用！")
+        st.error("请精确卡片名称后使用！")
 
