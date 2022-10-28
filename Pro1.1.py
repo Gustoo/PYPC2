@@ -53,8 +53,19 @@ def getall(word):
             st.header("Card Effect")
             st.write(Cardtype)
             st.write(Cardkoka)
-        st.success("The picture is downloaded successfully")
+            with open("./yghimg/"+str(word)+".jpg", "rb") as file:
+                btn = st.download_button(
+                    label="Download image",
+                    data=file,
+                    file_name=str(word)+".jpg",
+                    mime="image/jpg",
+                )
+                if btn==True:
+                    success()
 
+
+def success():
+    st.success("The picture is downloaded successfully")
 
 def APP():
     global message
