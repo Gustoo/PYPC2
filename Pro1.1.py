@@ -74,8 +74,8 @@ def show(CardDL,word,Cardtype,Cardkoka):
                 file_name=str(word) + ".jpg",
                 mime="image/jpg",
             )
-            if btn == True:
-                success()
+        if btn == True:
+            success()
 
 def success():
     st.success("The picture is downloaded successfully")
