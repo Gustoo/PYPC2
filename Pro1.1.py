@@ -40,7 +40,7 @@ def getall(word):
         #print(Cardtype)
         #print(Cardkoka)
         CardDL = tree.xpath("//main//li//div//img/@src")[0]
-        urllib.request.urlretrieve(url=CardDL,filename="./yghimg/"+str(word)+".jpg")
+        urllib.request.urlretrieve(url=CardDL,filename=str(word)+".jpg")
         #print("已成功下载卡片")
         img = Image.open("./yghimg/"+str(word)+".jpg")
         img = img.resize((295, 430), Image.ANTIALIAS)
